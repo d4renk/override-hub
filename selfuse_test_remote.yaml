@@ -227,15 +227,15 @@ rule-providers:
     path: ./rule_set/sukkaw_ruleset/microsoft_non_ip.txt
   
   # 软件更新、操作系统等大文件下载
-  download_domainset:
-    <<: *RuleSet_domain
-    url: https://ruleset.skk.moe/Clash/domainset/download.txt
-    path: ./rule_set/sukkaw_ruleset/download_domainset.txt
+  # download_domainset:
+  #   <<: *RuleSet_domain
+  #   url: https://ruleset.skk.moe/Clash/domainset/download.txt
+  #   path: ./rule_set/sukkaw_ruleset/download_domainset.txt
 
-  download_non_ip:
-    <<: *RuleSet_domain
-    url: https://ruleset.skk.moe/Clash/non_ip/download.txt
-    path: ./rule_set/sukkaw_ruleset/download_non_ip.txt
+  # download_non_ip:
+  #   <<: *RuleSet_domain
+  #   url: https://ruleset.skk.moe/Clash/non_ip/download.txt
+  #   path: ./rule_set/sukkaw_ruleset/download_non_ip.txt
 
   # 内网域名和局域网 IP
   lan_non_ip:
