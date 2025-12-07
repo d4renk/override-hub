@@ -285,8 +285,6 @@ rules:
   - RULE-SET,stream_non_ip,国外媒体
   - RULE-SET,telegram_non_ip,电报信息
   - RULE-SET,apple_cdn,DIRECT
-  - RULE-SET,download_domainset,省流选择
-  - RULE-SET,download_non_ip,省流选择
   - RULE-SET,microsoft_cdn_non_ip,DIRECT
   - RULE-SET,apple_cn_non_ip,DIRECT
   - RULE-SET,apple_services,苹果服务
