@@ -108,7 +108,7 @@
                 "mode": "link",
                 "arguments": {
                     "bl": "true",
-                    "blkey": "家宽+IPLC+IEPL+落地+IPv6",
+                    "blkey": "家宽+IPLC+IEPL+落地+IPv6+自建",
                     "flag": "true",
                     "in": "true",
                     "nm": "true",
