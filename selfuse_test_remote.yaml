@@ -127,9 +127,14 @@ RuleSet_classical: &RuleSet_classical {type: http, behavior: classical, interval
 RuleSet_domain: &RuleSet_domain {type: http, behavior: domain, interval: 43200, format: text, proxy: 节点选择}
 RuleSet_ipcidr: &RuleSet_ipcidr {type: http, behavior: ipcidr, interval: 43200, format: text, proxy: 节点选择}
 RuleSet_filter: &RuleSet_filter {type: http, behavior: domain, interval: 43200, format: mrs, proxy: 节点选择}
+ip: &ip {type: http, interval: 86400, behavior: ipcidr, format: mrs}
+domain: &domain {type: http, interval: 86400, behavior: domain, format: mrs}
 
 # 订阅规则
 rule-providers:
+  google_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google.mrs", path: ./rule_set/other_ruleset/google_domain.mrs }
+  google_ip: { <<: *ip, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/google.mrs", path: ./rule_set/other_ruleset/google_ip.mrs }
+
   fakeip-filter:
     <<: *RuleSet_filter
     url: https://testingcf.jsdelivr.net/gh/DustinWin/ruleset_geodata@mihomo-ruleset/fakeip-filter.mrs
@@ -282,6 +287,8 @@ rules:
   - RULE-SET,reject_non_ip_no_drop,REJECT
   - RULE-SET,stream_non_ip,国外媒体
   - RULE-SET,telegram_non_ip,电报信息
+  - RULE-SET,google_domain,谷歌服务
+  - RULE-SET,google_ip,谷歌服务
   - RULE-SET,apple_cdn,DIRECT
   - RULE-SET,microsoft_cdn_non_ip,DIRECT
   - RULE-SET,apple_cn_non_ip,DIRECT
