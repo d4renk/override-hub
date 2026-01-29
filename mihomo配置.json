@@ -1,1 +1,38 @@
-{"name":"mihomo","displayName":"","remark":"","icon":"https://raw.githubusercontent.com/cc63/ICON/main/icons/Clash.png","source":"local","sourceType":"collection","sourceName":"substore_merge_config_template","process":[{"type":"Script Operator","args":{"content":"https://raw.githubusercontent.com/Seameee/override-hub/refs/heads/main/selfuse_test_remote.yaml","mode":"link","arguments":{}},"id":"57058481.78778347","disabled":false},{"type":"Script Operator","args":{"content":"// 如果使用组合订阅模板中，自动选择中继节点的链式代理脚本，可以启用这个脚本隐藏中继选择策略组\nfunction main(config) {\n  config[\"proxy-groups\"].forEach((group) => {\n    if (group.name === \"中继选择\") {\n      group.hidden = true;\n    }\n  });\n  return config;\n}","mode":"script","arguments":{}},"customName":"","id":"24772717.359092887","disabled":true}],"type":"mihomoProfile","content":"// 填入文件内容\n","download":true,"display-name":"","ignoreFailedRemoteFile":false,"subInfoUrl":""}
+{
+    "name": "mihomo",
+    "displayName": "",
+    "remark": "",
+    "icon": "https://raw.githubusercontent.com/cc63/ICON/main/icons/Clash.png",
+    "source": "local",
+    "sourceType": "collection",
+    "sourceName": "substore_merge_config_template",
+    "process": [
+        {
+            "type": "Script Operator",
+            "args": {
+                "content": "https://raw.githubusercontent.com/Seameee/override-hub/refs/heads/main/selfuse_test_remote.yaml",
+                "mode": "link",
+                "arguments": {}
+            },
+            "id": "57058481.78778347",
+            "disabled": false
+        },
+        {
+            "type": "Script Operator",
+            "args": {
+                "content": "// \u5982\u679c\u4f7f\u7528\u7ec4\u5408\u8ba2\u9605\u6a21\u677f\u4e2d\uff0c\u81ea\u52a8\u9009\u62e9\u4e2d\u7ee7\u8282\u70b9\u7684\u94fe\u5f0f\u4ee3\u7406\u811a\u672c\uff0c\u53ef\u4ee5\u542f\u7528\u8fd9\u4e2a\u811a\u672c\u9690\u85cf\u4e2d\u7ee7\u9009\u62e9\u7b56\u7565\u7ec4\nfunction main(config) {\n  config[\"proxy-groups\"].forEach((group) => {\n    if (group.name === \"\u4e2d\u7ee7\u9009\u62e9\") {\n      group.hidden = true;\n    }\n  });\n  return config;\n}",
+                "mode": "script",
+                "arguments": {}
+            },
+            "customName": "",
+            "id": "24772717.359092887",
+            "disabled": true
+        }
+    ],
+    "type": "mihomoProfile",
+    "content": "// \u586b\u5165\u6587\u4ef6\u5185\u5bb9\n",
+    "download": true,
+    "display-name": "",
+    "ignoreFailedRemoteFile": false,
+    "subInfoUrl": ""
+}
