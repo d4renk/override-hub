@@ -100,7 +100,7 @@ proxy-groups:
   # 特殊分组
   - {name: 省流选择, <<: *Auto, filter: *FilterSave, icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png}
   - {name: 高级选择, <<: *Auto, filter: *FilterAdvance, icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png}
-  - {name: 中继选择, <<: *Select, filter: *FilterAll, icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Final.png}
+  - {name: 中继选择, type: select, proxies: [自动选择], url: 'https://www.apple.com/library/test/success.html', disable-udp: false, hidden: false, include-all: true, filter: *FilterAll, icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Final.png}
   - {name: 落地选择, <<: *Select, filter: *FilterLanding, icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png}
   - {name: 节点轮询, <<: *Loadbalance, filter: *FilterTunnel, icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Roundrobin.png}
 
