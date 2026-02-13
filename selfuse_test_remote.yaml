@@ -32,7 +32,9 @@ dns:
         - https://dns.flymc.cc/dns-query
     fake-ip-range: 198.18.0.1/16
     fake-ip-filter: ['rule-set:fakeip-filter,trackerslist,private,cn']
-    nameserver-policy: {'rule-set:reject_non_ip,reject_domainset,reject_non_ip_drop,reject_non_ip_no_drop': [rcode://success]}
+    nameserver-policy:
+        'rule-set:reject_non_ip,reject_domainset,reject_non_ip_drop,reject_non_ip_no_drop': [rcode://success]
+        'rule-set:google_domain,global_non_ip,stream_non_ip,ai_non_ip,telegram_non_ip': [https://1.1.1.1/dns-query, https://dns.google/dns-query]
 
 ### 域名嗅探
 sniffer:
