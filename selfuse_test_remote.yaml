@@ -143,12 +143,12 @@ proxy-groups:
   - {name: 台湾节点, <<: *Auto, filter: *FilterTW, icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/CN.png}
 
 ### 规则配置
-RuleSet_classical: &RuleSet_classical {type: file, behavior: classical, interval: 43200, format: text, proxy: 节点选择}
-RuleSet_domain: &RuleSet_domain {type: file, behavior: domain, interval: 43200, format: text, proxy: 节点选择}
-RuleSet_ipcidr: &RuleSet_ipcidr {type: file, behavior: ipcidr, interval: 43200, format: text, proxy: 节点选择}
-RuleSet_filter: &RuleSet_filter {type: file, behavior: domain, interval: 43200, format: mrs, proxy: 节点选择}
-ip: &ip {type: file, interval: 86400, behavior: ipcidr, format: mrs}
-domain: &domain {type: file, interval: 86400, behavior: domain, format: mrs}
+RuleSet_classical: &RuleSet_classical {type: http, behavior: classical, interval: 43200, format: text, proxy: 节点选择}
+RuleSet_domain: &RuleSet_domain {type: http, behavior: domain, interval: 43200, format: text, proxy: 节点选择}
+RuleSet_ipcidr: &RuleSet_ipcidr {type: http, behavior: ipcidr, interval: 43200, format: text, proxy: 节点选择}
+RuleSet_filter: &RuleSet_filter {type: http, behavior: domain, interval: 43200, format: mrs, proxy: 节点选择}
+ip: &ip {type: http, interval: 86400, behavior: ipcidr, format: mrs}
+domain: &domain {type: http, interval: 86400, behavior: domain, format: mrs}
 
 # 订阅规则
 rule-providers:
