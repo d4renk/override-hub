@@ -40,11 +40,11 @@ dns:
     fake-ip-filter: ['rule-set:fakeip-filter,trackerslist,private,cn']
     nameserver-policy:
         'rule-set:reject_non_ip,reject_domainset,reject_non_ip_drop,reject_non_ip_no_drop': [rcode://success]
-        '+.google.com': ['https://1.1.1.1/dns-query#RULES', 'https://dns.google/dns-query#RULES']
-        '+.gstatic.com': ['https://1.1.1.1/dns-query#RULES', 'https://dns.google/dns-query#RULES']
-        '+.googleapis.com': ['https://1.1.1.1/dns-query#RULES', 'https://dns.google/dns-query#RULES']
-        '+.youtube.com': ['https://1.1.1.1/dns-query#RULES', 'https://dns.google/dns-query#RULES']
-        'rule-set:google_domain,global_non_ip,stream_non_ip,ai_non_ip,telegram_non_ip': ['https://1.1.1.1/dns-query#RULES', 'https://dns.google/dns-query#RULES']
+        '+.google.com': ['https://1.1.1.1/dns-query#自动选择', 'https://dns.google/dns-query#自动选择']
+        '+.gstatic.com': ['https://1.1.1.1/dns-query#自动选择', 'https://dns.google/dns-query#自动选择']
+        '+.googleapis.com': ['https://1.1.1.1/dns-query#自动选择', 'https://dns.google/dns-query#自动选择']
+        '+.youtube.com': ['https://1.1.1.1/dns-query#自动选择', 'https://dns.google/dns-query#自动选择']
+        'rule-set:google_domain,global_non_ip,stream_non_ip,ai_non_ip,telegram_non_ip': ['https://1.1.1.1/dns-query#自动选择', 'https://dns.google/dns-query#自动选择']
 
 ### 域名嗅探
 sniffer:
