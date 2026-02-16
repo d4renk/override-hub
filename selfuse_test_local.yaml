@@ -73,16 +73,26 @@ FilterTW: &FilterTW '^(?=.*(台湾|TW|Taiwan|Wan|🇨🇳|🇨🇳))^(?!.*(网�
 FilterOthers: &FilterOthers '^(?!.*(🇭🇰|HK|Hong|香港|🇨🇳|TW|Taiwan|Wan|🇯🇵|JP|Japan|日本|🇸🇬|SG|Singapore|狮城|🇺🇸|US|United States|America|美国|🇩🇪|DE|Germany|德国|🇬🇧|UK|United Kingdom|英国|🇰🇷|KR|Korea|韩国|韓|🇫🇷|FR|France|法国)).*$'
 FilterAdvance: &FilterAdvance '^(?=.*((?i)(\s|-)(([1-9](\.\d+)?)(×|x|X))|专线|专用|高级|急速|高倍率|IEPL|IPLC|AIA|CTM|CC|iepl|iplc|aia|ctm|cc))^(?!.*(落地|家宽|自建)).*$'
 FilterLanding: &FilterLanding '^(?=.*((?i)落地|家宽|自建)).*$'
+FilterLandingHK: &FilterLandingHK '^(?=.*((?i)落地|家宽|自建))(?=.*(香港|HK|Hong|🇭🇰)).*$'
+FilterLandingJP: &FilterLandingJP '^(?=.*((?i)落地|家宽|自建))(?=.*(日本|JP|Japan|🇯🇵)).*$'
+FilterLandingKR: &FilterLandingKR '^(?=.*((?i)落地|家宽|自建))(?=.*(韩国|韓|KR|Korea|🇰🇷)).*$'
+FilterLandingSG: &FilterLandingSG '^(?=.*((?i)落地|家宽|自建))(?=.*(新加坡|狮城|SG|Singapore|🇸🇬)).*$'
+FilterLandingUS: &FilterLandingUS '^(?=.*((?i)落地|家宽|自建))(?=.*(美国|US|United States|America|🇺🇸)).*$'
+FilterLandingUK: &FilterLandingUK '^(?=.*((?i)落地|家宽|自建))(?=.*(英国|UK|United Kingdom|🇬🇧)).*$'
+FilterLandingFR: &FilterLandingFR '^(?=.*((?i)落地|家宽|自建))(?=.*(法国|FR|France|🇫🇷)).*$'
+FilterLandingDE: &FilterLandingDE '^(?=.*((?i)落地|家宽|自建))(?=.*(德国|DE|Germany|🇩🇪)).*$'
+FilterLandingTW: &FilterLandingTW '^(?=.*((?i)落地|家宽|自建))(?=.*(台湾|TW|Taiwan|Wan|🇨🇳)).*$'
 FilterAll: &FilterAll '^(?=.*(.))(?!.*((?i)群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|(\b(USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author)\b|(\d{4}-\d{2}-\d{2}|\d+G)))).*$'
 FilterTunnel: &FilterTunnel '^(?=.*(香港|HK|Hong|🇭🇰|日本|JP|Japan|🇯🇵|新加坡|狮城|SG|Singapore|🇸🇬|韩国|KR|Korea|🇰🇷|美国|US|United States|America|🇺🇸))^(?!.*(网站|地址|剩余|过期|时间|有效|网址|禁止|邮箱|发布|客服|订阅|节点|落地|家宽|自建|×)).*$'
 
 Select: &Select {type: select, url: 'https://www.apple.com/library/test/success.html', disable-udp: false, hidden: false, include-all: true}
 Auto: &Auto {type: url-test, url: 'https://www.apple.com/library/test/success.html', interval: 10, tolerance: 50, disable-udp: false, hidden: true, include-all: true}
 Loadbalance: &Loadbalance {type: load-balance, url: 'https://www.apple.com/library/test/success.html', interval: 300, strategy: round-robin, disable-udp: false, hidden: true, include-all: true}
+LandingLB: &LandingLB {type: load-balance, url: 'https://www.apple.com/library/test/success.html', interval: 10, disable-udp: false, hidden: true, include-all: true}
 # 策略组
 proxy-groups: 
   # 主选择组
-  - {name: 节点选择, type: select, proxies: [自动选择, 手动选择, 高级选择,中继选择, 落地选择, 节点轮询, DIRECT], url: https://www.apple.com/library/test/success.html, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png}
+  - {name: 节点选择, type: select, proxies: [自动选择, 手动选择, 高级选择,中继选择, 落地选择, 落地家宽, 节点轮询, DIRECT], url: https://www.apple.com/library/test/success.html, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png}
 
   # 手动/自动
   - {name: 手动选择, <<: *Select, filter: *FilterAll, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Static.png}
@@ -92,15 +102,16 @@ proxy-groups:
   - {name: 高级选择, <<: *Auto, filter: *FilterAdvance, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png}
   - {name: 中继选择, <<: *Select, filter: *FilterAll, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Final.png}
   - {name: 落地选择, <<: *Select, filter: *FilterLanding, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png}
+  - {name: 落地家宽, type: select, proxies: [落地家宽香港, 落地家宽日本, 落地家宽韩国, 落地家宽狮城, 落地家宽美国, 落地家宽英国, 落地家宽法国, 落地家宽德国, 落地家宽台湾], url: https://www.apple.com/library/test/success.html, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png}
   - {name: 节点轮询, <<: *Loadbalance, filter: *FilterTunnel, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Roundrobin.png}
 
   # 应用分组
-  - {name: 电报信息, type: select, proxies: [节点选择, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Telegram.png}
-  - {name: 人工智能, type: select, proxies: [狮城节点, 节点选择, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 节点轮询, 香港节点, 日本节点, 韩国节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png}
-  - {name: 下载服务, type: select, proxies: [节点选择, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Download.png}
-  - {name: 苹果服务, type: select, proxies: [DIRECT, 节点选择, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Apple.png}
-  - {name: 微软服务, type: select, proxies: [DIRECT, 节点选择, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Microsoft.png}
-  - {name: 国外媒体, type: select, proxies: [节点选择, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Streaming.png}
+  - {name: 电报信息, type: select, proxies: [节点选择, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 落地家宽, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Telegram.png}
+  - {name: 人工智能, type: select, proxies: [狮城节点, 节点选择, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 落地家宽, 节点轮询, 香港节点, 日本节点, 韩国节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png}
+  - {name: 下载服务, type: select, proxies: [节点选择, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 落地家宽, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Download.png}
+  - {name: 苹果服务, type: select, proxies: [DIRECT, 节点选择, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 落地家宽, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Apple.png}
+  - {name: 微软服务, type: select, proxies: [DIRECT, 节点选择, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 落地家宽, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Microsoft.png}
+  - {name: 国外媒体, type: select, proxies: [节点选择, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 落地家宽, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Streaming.png}
 
   # 自动选择 - 按地区
   - {name: 香港节点, <<: *Auto, filter: *FilterHK, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/HK.png}
@@ -112,6 +123,17 @@ proxy-groups:
   - {name: 法国节点, <<: *Auto, filter: *FilterFR, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/FR.png}
   - {name: 德国节点, <<: *Auto, filter: *FilterDE, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/DE.png}
   - {name: 台湾节点, <<: *Auto, filter: *FilterTW, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/CN.png}
+
+  # 落地家宽 - 按地区负载均衡
+  - {name: 落地家宽香港, <<: *LandingLB, filter: *FilterLandingHK, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/HK.png}
+  - {name: 落地家宽日本, <<: *LandingLB, filter: *FilterLandingJP, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/JP.png}
+  - {name: 落地家宽韩国, <<: *LandingLB, filter: *FilterLandingKR, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/KR.png}
+  - {name: 落地家宽狮城, <<: *LandingLB, filter: *FilterLandingSG, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/SG.png}
+  - {name: 落地家宽美国, <<: *LandingLB, filter: *FilterLandingUS, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/US.png}
+  - {name: 落地家宽英国, <<: *LandingLB, filter: *FilterLandingUK, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/UK.png}
+  - {name: 落地家宽法国, <<: *LandingLB, filter: *FilterLandingFR, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/FR.png}
+  - {name: 落地家宽德国, <<: *LandingLB, filter: *FilterLandingDE, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/DE.png}
+  - {name: 落地家宽台湾, <<: *LandingLB, filter: *FilterLandingTW, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/CN.png}
 
 ### 规则配置
 RuleSet_classical: &RuleSet_classical {type: http, behavior: classical, interval: 43200, format: text, proxy: 节点选择}
