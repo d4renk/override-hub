@@ -89,36 +89,36 @@ Loadbalance: &Loadbalance {type: load-balance, url: 'https://www.apple.com/libra
 # 策略组
 proxy-groups: 
   # 主选择组
-  - {name: 节点选择, type: select, proxies: [自动选择, 手动选择, 高级选择,中继选择, 落地选择, 节点轮询, DIRECT], url: https://www.apple.com/library/test/success.html, icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png}
+  - {name: 节点选择, type: select, proxies: [自动选择, 手动选择, 高级选择,中继选择, 落地选择, 节点轮询, DIRECT], url: https://www.apple.com/library/test/success.html, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png}
 
   # 手动/自动
-  - {name: 手动选择, <<: *Select, filter: *FilterAll, icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Static.png}
-  - {name: 自动选择, type: select, proxies: [香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], url: https://www.apple.com/library/test/success.html, icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png}
+  - {name: 手动选择, <<: *Select, filter: *FilterAll, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Static.png}
+  - {name: 自动选择, type: select, proxies: [香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], url: https://www.apple.com/library/test/success.html, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png}
 
   # 特殊分组
-  - {name: 高级选择, <<: *Auto, filter: *FilterAdvance, icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png}
-  - {name: 中继选择, <<: *Select, filter: *FilterAll, icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Final.png}
-  - {name: 落地选择, <<: *Select, filter: *FilterLanding, icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png}
-  - {name: 节点轮询, <<: *Loadbalance, filter: *FilterTunnel, icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Roundrobin.png}
+  - {name: 高级选择, <<: *Auto, filter: *FilterAdvance, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png}
+  - {name: 中继选择, <<: *Select, filter: *FilterAll, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Final.png}
+  - {name: 落地选择, <<: *Select, filter: *FilterLanding, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png}
+  - {name: 节点轮询, <<: *Loadbalance, filter: *FilterTunnel, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Roundrobin.png}
 
   # 应用分组
-  - {name: 电报信息, type: select, proxies: [节点选择, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Telegram.png}
-  - {name: 人工智能, type: select, proxies: [狮城节点, 节点选择, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 节点轮询, 香港节点, 日本节点, 韩国节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png}
-  - {name: 下载服务, type: select, proxies: [节点选择, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Download.png}
-  - {name: 苹果服务, type: select, proxies: [DIRECT, 节点选择, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Apple.png}
-  - {name: 微软服务, type: select, proxies: [DIRECT, 节点选择, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Microsoft.png}
-  - {name: 国外媒体, type: select, proxies: [节点选择, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Streaming.png}
+  - {name: 电报信息, type: select, proxies: [节点选择, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Telegram.png}
+  - {name: 人工智能, type: select, proxies: [狮城节点, 节点选择, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 节点轮询, 香港节点, 日本节点, 韩国节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png}
+  - {name: 下载服务, type: select, proxies: [节点选择, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Download.png}
+  - {name: 苹果服务, type: select, proxies: [DIRECT, 节点选择, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Apple.png}
+  - {name: 微软服务, type: select, proxies: [DIRECT, 节点选择, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Microsoft.png}
+  - {name: 国外媒体, type: select, proxies: [节点选择, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Streaming.png}
 
   # 自动选择 - 按地区
-  - {name: 香港节点, <<: *Auto, filter: *FilterHK, icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/HK.png}
-  - {name: 日本节点, <<: *Auto, filter: *FilterJP, icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/JP.png}
-  - {name: 韩国节点, <<: *Auto, filter: *FilterKR, icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/KR.png}
-  - {name: 狮城节点, <<: *Auto, filter: *FilterSG, icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/SG.png}
-  - {name: 美国节点, <<: *Auto, filter: *FilterUS, icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/US.png}
-  - {name: 英国节点, <<: *Auto, filter: *FilterUK, icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/UK.png}
-  - {name: 法国节点, <<: *Auto, filter: *FilterFR, icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/FR.png}
-  - {name: 德国节点, <<: *Auto, filter: *FilterDE, icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/DE.png}
-  - {name: 台湾节点, <<: *Auto, filter: *FilterTW, icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/CN.png}
+  - {name: 香港节点, <<: *Auto, filter: *FilterHK, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/HK.png}
+  - {name: 日本节点, <<: *Auto, filter: *FilterJP, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/JP.png}
+  - {name: 韩国节点, <<: *Auto, filter: *FilterKR, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/KR.png}
+  - {name: 狮城节点, <<: *Auto, filter: *FilterSG, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/SG.png}
+  - {name: 美国节点, <<: *Auto, filter: *FilterUS, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/US.png}
+  - {name: 英国节点, <<: *Auto, filter: *FilterUK, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/UK.png}
+  - {name: 法国节点, <<: *Auto, filter: *FilterFR, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/FR.png}
+  - {name: 德国节点, <<: *Auto, filter: *FilterDE, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/DE.png}
+  - {name: 台湾节点, <<: *Auto, filter: *FilterTW, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/CN.png}
 
 ### 规则配置
 RuleSet_classical: &RuleSet_classical {type: http, behavior: classical, interval: 43200, format: text, proxy: 节点选择}
@@ -130,145 +130,145 @@ RuleSet_filter: &RuleSet_filter {type: http, behavior: domain, interval: 43200, 
 rule-providers:
   fakeip-filter:
     <<: *RuleSet_filter
-    url: https://testingcf.jsdelivr.net/gh/DustinWin/ruleset_geodata@mihomo-ruleset/fakeip-filter.mrs
+    url: https://886533.xyz/https://testingcf.jsdelivr.net/gh/DustinWin/ruleset_geodata@mihomo-ruleset/fakeip-filter.mrs
     path: ./rule_set/other_ruleset/fakeip-filter.mrs
 
   cn:
     <<: *RuleSet_filter
-    url: https://testingcf.jsdelivr.net/gh/DustinWin/ruleset_geodata@mihomo-ruleset/cn.mrs
+    url: https://886533.xyz/https://testingcf.jsdelivr.net/gh/DustinWin/ruleset_geodata@mihomo-ruleset/cn.mrs
     path: ./rule_set/other_ruleset/cn.mrs
 
   private:
     <<: *RuleSet_filter
-    url: https://testingcf.jsdelivr.net/gh/DustinWin/ruleset_geodata@mihomo-ruleset/private.mrs
+    url: https://886533.xyz/https://testingcf.jsdelivr.net/gh/DustinWin/ruleset_geodata@mihomo-ruleset/private.mrs
     path: ./rule_set/other_ruleset/private.mrs
 
   trackerslist:
     <<: *RuleSet_filter
-    url: https://testingcf.jsdelivr.net/gh/DustinWin/ruleset_geodata@mihomo-ruleset/trackerslist.mrs
+    url: https://886533.xyz/https://testingcf.jsdelivr.net/gh/DustinWin/ruleset_geodata@mihomo-ruleset/trackerslist.mrs
     path: ./rule_set/other_ruleset/trackerslist.mrs
 
   reject_non_ip_no_drop:
     <<: *RuleSet_classical
-    url: https://ruleset.skk.moe/Clash/non_ip/reject-no-drop.txt
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/non_ip/reject-no-drop.txt
     path: ./rule_set/sukkaw_ruleset/reject_non_ip_no_drop.txt
 
   reject_non_ip_drop:
     <<: *RuleSet_classical
-    url: https://ruleset.skk.moe/Clash/non_ip/reject-drop.txt
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/non_ip/reject-drop.txt
     path: ./rule_set/sukkaw_ruleset/reject_non_ip_drop.txt
 
   reject_non_ip:
     <<: *RuleSet_classical
-    url: https://ruleset.skk.moe/Clash/non_ip/reject.txt
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/non_ip/reject.txt
     path: ./rule_set/sukkaw_ruleset/reject_non_ip.txt
 
   reject_domainset:
     <<: *RuleSet_domain
-    url: https://ruleset.skk.moe/Clash/domainset/reject.txt
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/domainset/reject.txt
     path: ./rule_set/sukkaw_ruleset/reject_domainset.txt
 
   reject_ip:
     <<: *RuleSet_classical
-    url: https://ruleset.skk.moe/Clash/ip/reject.txt
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/ip/reject.txt
     path: ./rule_set/sukkaw_ruleset/reject_ip.txt
 
   # 所有流媒体（包括上述所有流媒体）
   stream_non_ip:
     <<: *RuleSet_classical
-    url: https://ruleset.skk.moe/Clash/non_ip/stream.txt
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/non_ip/stream.txt
     path: ./rule_set/sukkaw_ruleset/stream_non_ip.txt
 
   stream_ip:
     <<: *RuleSet_classical
-    url: https://ruleset.skk.moe/Clash/ip/stream.txt
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/ip/stream.txt
     path: ./rule_set/sukkaw_ruleset/stream_ip.txt
 
   ai_non_ip:
     <<: *RuleSet_classical
-    url: https://ruleset.skk.moe/Clash/non_ip/ai.txt
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/non_ip/ai.txt
     path: ./rule_set/sukkaw_ruleset/ai_non_ip.txt
 
   telegram_non_ip:
     <<: *RuleSet_classical
-    url: https://ruleset.skk.moe/Clash/non_ip/telegram.txt
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/non_ip/telegram.txt
     path: ./rule_set/sukkaw_ruleset/telegram_non_ip.txt
 
   telegram_ip:
     <<: *RuleSet_classical
-    url: https://ruleset.skk.moe/Clash/ip/telegram.txt
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/ip/telegram.txt
     path: ./rule_set/sukkaw_ruleset/telegram_ip.txt
 
   apple_cdn:
     <<: *RuleSet_domain
-    url: https://ruleset.skk.moe/Clash/domainset/apple_cdn.txt
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/domainset/apple_cdn.txt
     path: ./rule_set/sukkaw_ruleset/apple_cdn.txt
 
   apple_services:
     <<: *RuleSet_classical
-    url: https://ruleset.skk.moe/Clash/non_ip/apple_services.txt
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/non_ip/apple_services.txt
     path: ./rule_set/sukkaw_ruleset/apple_services.txt
 
   apple_cn_non_ip:
     <<: *RuleSet_classical
-    url: https://ruleset.skk.moe/Clash/non_ip/apple_cn.txt
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/non_ip/apple_cn.txt
     path: ./rule_set/sukkaw_ruleset/apple_cn_non_ip.txt
   
   microsoft_cdn_non_ip:
     <<: *RuleSet_classical
-    url: https://ruleset.skk.moe/Clash/non_ip/microsoft_cdn.txt
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/non_ip/microsoft_cdn.txt
     path: ./rule_set/sukkaw_ruleset/microsoft_cdn_non_ip.txt
 
   microsoft_non_ip:
     <<: *RuleSet_classical
-    url: https://ruleset.skk.moe/Clash/non_ip/microsoft.txt
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/non_ip/microsoft.txt
     path: ./rule_set/sukkaw_ruleset/microsoft_non_ip.txt
   
   # 软件更新、操作系统等大文件下载
   download_domainset:
     <<: *RuleSet_domain
-    url: https://ruleset.skk.moe/Clash/domainset/download.txt
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/domainset/download.txt
     path: ./rule_set/sukkaw_ruleset/download_domainset.txt
 
   download_non_ip:
     <<: *RuleSet_domain
-    url: https://ruleset.skk.moe/Clash/non_ip/download.txt
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/non_ip/download.txt
     path: ./rule_set/sukkaw_ruleset/download_non_ip.txt
 
   # 内网域名和局域网 IP
   lan_non_ip:
     <<: *RuleSet_classical
-    url: https://ruleset.skk.moe/Clash/non_ip/lan.txt
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/non_ip/lan.txt
     path: ./rule_set/sukkaw_ruleset/lan_non_ip.txt
 
   lan_ip:
     <<: *RuleSet_classical
-    url: https://ruleset.skk.moe/Clash/ip/lan.txt
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/ip/lan.txt
     path: ./rule_set/sukkaw_ruleset/lan_ip.txt
   
   domestic_non_ip:
     <<: *RuleSet_classical
-    url: https://ruleset.skk.moe/Clash/non_ip/domestic.txt
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/non_ip/domestic.txt
     path: ./rule_set/sukkaw_ruleset/domestic_non_ip.txt
 
   direct_non_ip:
     <<: *RuleSet_classical
-    url: https://ruleset.skk.moe/Clash/non_ip/direct.txt
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/non_ip/direct.txt
     path: ./rule_set/sukkaw_ruleset/direct_non_ip.txt
 
   global_non_ip:
     <<: *RuleSet_classical
-    url: https://ruleset.skk.moe/Clash/non_ip/global.txt
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/non_ip/global.txt
     path: ./rule_set/sukkaw_ruleset/global_non_ip.txt
 
   domestic_ip:
     <<: *RuleSet_classical
-    url: https://ruleset.skk.moe/Clash/ip/domestic.txt
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/ip/domestic.txt
     path: ./rule_set/sukkaw_ruleset/domestic_ip.txt
 
   china_ip:
     <<: *RuleSet_ipcidr
-    url: https://testingcf.jsdelivr.net/gh/Seameee/override-hub@refs/heads/main/mergecnip/china_ip.txt
+    url: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Seameee/override-hub@refs/heads/main/mergecnip/china_ip.txt
     path: ./rule_set/other_ruleset/china_ip.txt
 
 # 分流规则
