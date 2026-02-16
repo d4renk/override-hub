@@ -88,7 +88,7 @@ FilterTunnel: &FilterTunnel '^(?=.*(香港|HK|Hong|🇭🇰|日本|JP|Japan|🇯
 Select: &Select {type: select, url: 'https://www.apple.com/library/test/success.html', disable-udp: false, hidden: false, include-all: true}
 Auto: &Auto {type: url-test, url: 'https://www.apple.com/library/test/success.html', interval: 10, tolerance: 50, disable-udp: false, hidden: true, include-all: true}
 Loadbalance: &Loadbalance {type: load-balance, url: 'https://www.apple.com/library/test/success.html', interval: 300, strategy: round-robin, disable-udp: false, hidden: true, include-all: true}
-LandingLB: &LandingLB {type: load-balance, url: 'https://www.apple.com/library/test/success.html', interval: 10, disable-udp: false, hidden: true, include-all: true}
+LandingLB: &LandingLB {type: url-test, url: 'https://www.apple.com/library/test/success.html', interval: 10, tolerance: 50, disable-udp: false, hidden: true, include-all: true}
 # 策略组
 proxy-groups: 
   # 主选择组
