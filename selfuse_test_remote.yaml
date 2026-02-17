@@ -118,6 +118,7 @@ proxy-groups:
   - {name: 下载服务, type: select, proxies: [节点选择, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 落地家宽, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Download.png}
   - {name: 苹果服务, type: select, proxies: [DIRECT, 节点选择, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 落地家宽, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Apple.png}
   - {name: 微软服务, type: select, proxies: [DIRECT, 节点选择, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 落地家宽, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Microsoft.png}
+  - {name: 谷歌服务, type: select, proxies: [节点选择, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 落地家宽, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png}
   - {name: 国外媒体, type: select, proxies: [节点选择, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 落地家宽, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Streaming.png}
 
   # 自动选择 - 按地区
@@ -288,6 +289,16 @@ rule-providers:
     url: https://886533.xyz/https://ruleset.skk.moe/Clash/ip/domestic.txt
     path: ./rule_set/sukkaw_ruleset/domestic_ip.txt
 
+  google_non_ip:
+    <<: *RuleSet_classical
+    url: https://886533.xyz/https://testingcf.jsdelivr.net/gh/dler-io/Rules@main/Clash/Provider/Google.yaml
+    path: ./rule_set/sukkaw_ruleset/google_non_ip.yaml
+
+  google_ip:
+    <<: *RuleSet_ipcidr
+    url: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/google.txt
+    path: ./rule_set/sukkaw_ruleset/google_ip.txt
+
   china_ip:
     <<: *RuleSet_ipcidr
     url: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Seameee/override-hub@refs/heads/main/mergecnip/china_ip.txt
@@ -310,6 +321,7 @@ rules:
   - RULE-SET,apple_cn_non_ip,DIRECT
   - RULE-SET,apple_services,苹果服务
   - RULE-SET,microsoft_non_ip,微软服务
+  - RULE-SET,google_non_ip,谷歌服务
   - RULE-SET,global_non_ip,节点选择
   - RULE-SET,domestic_non_ip,DIRECT
   - RULE-SET,cn,DIRECT
@@ -320,6 +332,7 @@ rules:
   - RULE-SET,reject_ip,REJECT
   - RULE-SET,telegram_ip,电报信息,no-resolve
   - RULE-SET,stream_ip,国外媒体
+  - RULE-SET,google_ip,谷歌服务
   - RULE-SET,lan_ip,DIRECT,no-resolve
   - RULE-SET,domestic_ip,DIRECT
   - RULE-SET,china_ip,DIRECT
