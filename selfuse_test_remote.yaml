@@ -346,10 +346,36 @@ rule-providers:
 
 # 分流规则
 rules:
+  # Steam 下载服务器 (必须直连，否则速度慢)
+  - DOMAIN-SUFFIX,steamcontent.com,DIRECT
+  - DOMAIN-SUFFIX,steampowered.com.8686c.com,DIRECT
+  - DOMAIN-SUFFIX,steamserver.net,DIRECT
+  - DOMAIN,content.steampowered.com,DIRECT
+  - DOMAIN,content-origin.steampowered.com,DIRECT
+  - DOMAIN,client-download.steampowered.com,DIRECT
+  - DOMAIN,media.steampowered.com,DIRECT
+  - DOMAIN,clientconfig.akamai.steamstatic.com,DIRECT
+  - DOMAIN-SUFFIX,steamchina.com,DIRECT
+  - DOMAIN-SUFFIX,wmsjsteam.com,DIRECT
+  - DOMAIN-SUFFIX,dl.steam.clngaa.com,DIRECT
+  - DOMAIN-SUFFIX,dl.steam.ksyna.com,DIRECT
+  ### IP类
+  - IP-CIDR,103.10.124.0/24,DIRECT
+  - IP-CIDR,103.28.54.0/24,DIRECT
+  - IP-CIDR,146.66.152.0/24,DIRECT
+  - IP-CIDR,146.66.155.0/24,DIRECT
+  - IP-CIDR,153.254.86.0/24,DIRECT
+  - IP-CIDR,155.133.224.0/22,DIRECT
+  - IP-CIDR,162.254.192.0/21,DIRECT
+  - IP-CIDR,185.25.182.0/23,DIRECT
+  - IP-CIDR,190.217.32.0/21,DIRECT
+  - IP-CIDR,192.69.96.0/22,DIRECT
+  - IP-CIDR,205.196.6.0/24,DIRECT
+  - IP-CIDR,208.64.200.0/22,DIRECT
+  - IP-CIDR,208.78.164.0/22,DIRECT
+
   ### 其他
   - DOMAIN-KEYWORD,srmdata,REJECT
-  - DOMAIN-SUFFIX,steamstatic.com,DIRECT
-  - DOMAIN-SUFFIX,steamserver.net,DIRECT
   ### 非 IP 类规则
   - RULE-SET,reject_non_ip,REJECT
   - RULE-SET,reject_domainset,REJECT
