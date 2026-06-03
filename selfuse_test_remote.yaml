@@ -348,7 +348,6 @@ rule-providers:
 rules:
   ### 其他
   - DOMAIN-KEYWORD,srmdata,REJECT
-  - DOMAIN-KEYWORD,dotfashion,REJECT
   # Steam 下载服务器 (必须直连，否则速度慢)
   - DOMAIN-SUFFIX,steamcontent.com,DIRECT
   - DOMAIN-SUFFIX,steampowered.com.8686c.com,DIRECT
