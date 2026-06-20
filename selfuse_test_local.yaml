@@ -93,11 +93,11 @@ LandingLB: &LandingLB {type: url-test, url: 'https://www.apple.com/library/test/
 proxy-groups: 
   # 主选择组
   - {name: 节点选择, type: select, proxies: [自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 落地家宽, 节点轮询, 全球直连], url: https://www.apple.com/library/test/success.html, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png}
-  - {name: 全球直连, type: select, proxies: [DIRECT], url: https://www.apple.com/library/test/success.html, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png}
+  - {name: 全球直连, type: select, proxies: [DIRECT, 自动选择], include-all: true, url: https://www.apple.com/library/test/success.html, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png}
 
   # 手动/自动
   - {name: 手动选择, <<: *Select, filter: *FilterAll, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Static.png}
-  - {name: 自动选择, type: select, proxies: [全球直连, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], url: https://www.apple.com/library/test/success.html, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png}
+  - {name: 自动选择, type: select, proxies: [香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], url: https://www.apple.com/library/test/success.html, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png}
 
   # 特殊分组
   - {name: 高级选择, <<: *Auto, filter: *FilterAdvance, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png}
