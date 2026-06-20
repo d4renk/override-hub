@@ -93,6 +93,7 @@ LandingLB: &LandingLB {type: url-test, url: 'https://www.apple.com/library/test/
 proxy-groups: 
   # 主选择组
   - {name: 节点选择, type: select, proxies: [自动选择, 手动选择, 高级选择,中继选择, 落地选择, 落地家宽, 节点轮询, DIRECT], url: https://www.apple.com/library/test/success.html, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png}
+  - {name: 全球直连, type: select, proxies: [DIRECT, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 落地家宽, 节点轮询], url: https://www.apple.com/library/test/success.html, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png}
 
   # 手动/自动
   - {name: 手动选择, <<: *Select, filter: *FilterAll, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Static.png}
@@ -307,26 +308,26 @@ rules:
   - RULE-SET,ai_non_ip,人工智能
   - RULE-SET,stream_non_ip,国外媒体
   - RULE-SET,telegram_non_ip,电报信息
-  - RULE-SET,apple_cdn,DIRECT
+  - RULE-SET,apple_cdn,全球直连
   - RULE-SET,download_domainset,下载服务
   - RULE-SET,download_non_ip,下载服务
-  - RULE-SET,microsoft_cdn_non_ip,DIRECT
-  - RULE-SET,apple_cn_non_ip,DIRECT
+  - RULE-SET,microsoft_cdn_non_ip,全球直连
+  - RULE-SET,apple_cn_non_ip,全球直连
   - RULE-SET,apple_services,苹果服务
   - RULE-SET,microsoft_non_ip,微软服务
   - RULE-SET,google_non_ip,谷歌服务
   - RULE-SET,global_non_ip,节点选择
-  - RULE-SET,domestic_non_ip,DIRECT
-  - RULE-SET,cn,DIRECT
-  - RULE-SET,direct_non_ip,DIRECT
-  - RULE-SET,lan_non_ip,DIRECT
+  - RULE-SET,domestic_non_ip,全球直连
+  - RULE-SET,cn,全球直连
+  - RULE-SET,direct_non_ip,全球直连
+  - RULE-SET,lan_non_ip,全球直连
 
   ### IP 类规则
   - RULE-SET,reject_ip,REJECT
   - RULE-SET,telegram_ip,电报信息,no-resolve
   - RULE-SET,stream_ip,国外媒体
   - RULE-SET,google_ip,谷歌服务
-  - RULE-SET,lan_ip,DIRECT,no-resolve
-  - RULE-SET,domestic_ip,DIRECT
-  - RULE-SET,china_ip,DIRECT
+  - RULE-SET,lan_ip,全球直连,no-resolve
+  - RULE-SET,domestic_ip,全球直连
+  - RULE-SET,china_ip,全球直连
   - MATCH,节点选择
