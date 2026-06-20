@@ -139,28 +139,28 @@ LandingLB: &LandingLB {type: url-test, url: 'https://www.apple.com/library/test/
 # 策略组
 proxy-groups: 
   # 主选择组
-  - {name: 节点选择, type: select, proxies: [自动选择, 手动选择, 高级选择,中继选择, 落地选择, 落地家宽, 节点轮询, DIRECT], url: https://www.apple.com/library/test/success.html, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png}
-  - {name: 全球直连, type: select, proxies: [DIRECT, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 落地家宽, 节点轮询], url: https://www.apple.com/library/test/success.html, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png}
+  - {name: 节点选择, type: select, proxies: [自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 落地家宽, 节点轮询, 全球直连], url: https://www.apple.com/library/test/success.html, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png}
+  - {name: 全球直连, type: select, proxies: [DIRECT], url: https://www.apple.com/library/test/success.html, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png}
 
   # 手动/自动
   - {name: 手动选择, <<: *Select, filter: *FilterAll, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Static.png}
-  - {name: 自动选择, type: select, proxies: [香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], url: https://www.apple.com/library/test/success.html, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png}
+  - {name: 自动选择, type: select, proxies: [全球直连, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], url: https://www.apple.com/library/test/success.html, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png}
 
   # 特殊分组
   - {name: 高级选择, <<: *Auto, filter: *FilterAdvance, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png}
   - {name: 中继选择, <<: *Select, filter: *FilterAll, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Final.png}
   - {name: 落地选择, <<: *Select, filter: *FilterLanding, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png}
-  - {name: 落地家宽, type: select, proxies: [落地家宽香港, 落地家宽日本, 落地家宽韩国, 落地家宽狮城, 落地家宽美国, 落地家宽英国, 落地家宽法国, 落地家宽德国, 落地家宽台湾], url: https://www.apple.com/library/test/success.html, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png}
+  - {name: 落地家宽, type: select, proxies: [全球直连, 落地家宽香港, 落地家宽日本, 落地家宽韩国, 落地家宽狮城, 落地家宽美国, 落地家宽英国, 落地家宽法国, 落地家宽德国, 落地家宽台湾], url: https://www.apple.com/library/test/success.html, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png}
   - {name: 节点轮询, <<: *Loadbalance, filter: *FilterTunnel, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Roundrobin.png}
 
   # 应用分组
-  - {name: 电报信息, type: select, proxies: [节点选择, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 落地家宽, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Telegram.png}
-  - {name: 人工智能, type: select, proxies: [狮城节点, 节点选择, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 落地家宽, 节点轮询, 香港节点, 日本节点, 韩国节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png}
-  - {name: 下载服务, type: select, proxies: [节点选择, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 落地家宽, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Download.png}
-  - {name: 苹果服务, type: select, proxies: [DIRECT, 节点选择, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 落地家宽, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Apple.png}
-  - {name: 微软服务, type: select, proxies: [DIRECT, 节点选择, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 落地家宽, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Microsoft.png}
-  - {name: 谷歌服务, type: select, proxies: [节点选择, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 落地家宽, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png}
-  - {name: 国外媒体, type: select, proxies: [节点选择, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 落地家宽, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Streaming.png}
+  - {name: 电报信息, type: select, proxies: [节点选择, 全球直连, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 落地家宽, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Telegram.png}
+  - {name: 人工智能, type: select, proxies: [全球直连, 狮城节点, 节点选择, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 落地家宽, 节点轮询, 香港节点, 日本节点, 韩国节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png}
+  - {name: 下载服务, type: select, proxies: [节点选择, 全球直连, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 落地家宽, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Download.png}
+  - {name: 苹果服务, type: select, proxies: [全球直连, 节点选择, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 落地家宽, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Apple.png}
+  - {name: 微软服务, type: select, proxies: [全球直连, 节点选择, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 落地家宽, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Microsoft.png}
+  - {name: 谷歌服务, type: select, proxies: [节点选择, 全球直连, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 落地家宽, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png}
+  - {name: 国外媒体, type: select, proxies: [节点选择, 全球直连, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 落地家宽, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Streaming.png}
 
   # 自动选择 - 按地区
   - {name: 香港节点, <<: *Auto, filter: *FilterHK, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/HK.png}
