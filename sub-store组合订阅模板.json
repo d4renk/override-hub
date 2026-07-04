@@ -34,7 +34,7 @@
             "args": {
                 "keep": false,
                 "regex": [
-                    "群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|付费|失联|设置|总计|(\\b(USE|USED|TOTAL|EXPIRE|EMAIL|Panel)\\b|(\\d{4}-\\d{2}-\\d{2}|\\dG))"
+                    "群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|恢复|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|邮件|观察|工单|部分|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|付费|失联|设置|总计|客户端|(\\b(USE|TOTAL|EXPIRE|EMAIL|Panel)\\b|(\\d{4}-\\d{2}-\\d{2}))"
                 ]
             },
             "id": "10354460.04108187",
@@ -46,7 +46,10 @@
                 "action": "rename",
                 "position": "back",
                 "template": "0 1 2 3 4 5 6 7 8 9",
-                "link": " "
+                "link": " ",
+                "field": [
+                    "name"
+                ]
             },
             "id": "20454324.864660557",
             "disabled": false
@@ -58,12 +61,6 @@
                 "tw": "cn"
             },
             "id": "72382003.7008269",
-            "disabled": false
-        },
-        {
-            "type": "Sort Operator",
-            "args": "asc",
-            "id": "25116284.22819716",
             "disabled": false
         },
         {
@@ -104,11 +101,12 @@
         {
             "type": "Script Operator",
             "args": {
-                "content": "https://raw.githubusercontent.com/Keywos/rule/main/rename.js#bl=true&blkey=%E5%AE%B6%E5%AE%BD%2BIPLC%2BIEPL%2B%E8%90%BD%E5%9C%B0%2BIPv6&flag=true&in=true&nm=true&out=en%2Bcn",
+                "content": "https://raw.githubusercontent.com/Keywos/rule/main/rename.js#bl=true&blkey=%E5%AE%B6%E5%AE%BD%2BIPLC%2BIEPL%2B%E8%90%BD%E5%9C%B0%2BIPv6%2B%E4%BD%8E%E5%80%8D%E7%8E%87%2B%E7%9C%81%E6%B5%81%2BLanding%2BAdvance&blpx=true&flag=true&in=true&nm=true&out=en%2Bcn",
                 "mode": "link",
                 "arguments": {
                     "bl": "true",
-                    "blkey": "家宽+IPLC+IEPL+落地+IPv6",
+                    "blkey": "家宽+IPLC+IEPL+落地+IPv6+低倍率+省流+Landing+Advance",
+                    "blpx": "true",
                     "flag": "true",
                     "in": "true",
                     "nm": "true",
@@ -121,7 +119,7 @@
         {
             "type": "Script Operator",
             "args": {
-                "content": "// 链式代理自动设置脚本，自动选择对应地区节点进行中继，需要节点名中含有“家宽”或“落地”才会生效，按需启用\n// 如果想要设置链式代理的订阅没有包含以上字样，可以在单条订阅中添加一个正则命名操作，左侧设置为“$”，右侧设置为“ 落地”\n// ⚠️注意与下面的链式代理设置脚本只能启用其中一个\nconst substringCountries = ['香港', '台湾', '日本', '美国', '韩国', '英国', '法国', '德国'];\n\n// 定义允许的协议类型列表\nconst allowedProtocols = ['ss', 'socks5', 'http'];\n\n// 调整外层判断条件：\n// 1. 节点名称包含 '家宽' 或 '落地' (原条件)\n// 2. 节点的代理协议类型在 allowedProtocols 列表中\nif (($server.name.includes('家宽') || $server.name.includes('落地')) && allowedProtocols.includes($server.type)) {\n  // 原有的重命名逻辑被包裹在这里面\n  // 这个块只有在名字包含 '家宽' 或 '落地' 且协议是 shadowsocks, socks5, 或 http 时才会执行\n\n  if ($server.name.includes('新加坡')) {\n    // 如果包含“新加坡”，并且满足外层两个条件\n    $server['underlying-proxy'] = '狮城节点';\n  }\n  else if (substringCountries.some(country => $server.name.includes(country))) {\n    // 如果包含其他指定国家之一，并且满足外层两个条件\n    // 这里的 substring(5, 7) 依然保留原样，如果你的节点格式变了，记得调整。\n    const prefix = $server.name.substring(5, 7);\n    const underlyingProxyName = prefix + '节点';\n    $server['underlying-proxy'] = underlyingProxyName;\n  }\n  else {\n    // 如果不包含“新加坡”或任何指定国家，但满足外层两个条件\n    // 依然设为“香港节点”。\n    $server['underlying-proxy'] = '香港节点';\n  }\n}\n// 如果节点名称不包含 '家宽' 或 '落地'，或者协议不是 shadowsocks, socks5, 或 http，\n// 则跳过上面的整个 if 块，$server['underlying-proxy'] 将不会被修改。\n\n",
+                "content": "// 链式代理自动设置脚本，自动选择对应地区节点进行中继，需要节点名中含有“家宽”或“落地”才会生效，按需启用\n// 如果想要设置链式代理的订阅没有包含以上字样，可以在单条订阅中添加一个正则命名操作，左侧设置为“$”，右侧设置为“ 落地”\n// ⚠️注意与下面的链式代理设置脚本只能启用其中一个\nconst substringCountries = ['香港', '台湾', '日本', '美国', '韩国', '英国', '法国', '德国'];\n\n// 定义允许的协议类型列表\nconst allowedProtocols = ['ss', 'socks5', 'http'];\n\n// 调整外层判断条件：\n// 1. 节点名称包含 '家宽' 或 '落地' (原条件)\n// 2. 节点的代理协议类型在 allowedProtocols 列表中\nif (($server.name.includes('家宽') || $server.name.includes('落地') || $server.name.includes('Landing')) && allowedProtocols.includes($server.type)) {\n  // 原有的重命名逻辑被包裹在这里面\n  // 这个块只有在名字包含 '家宽' 或 '落地' 且协议是 shadowsocks, socks5, 或 http 时才会执行\n\n  if ($server.name.includes('新加坡')) {\n    // 如果包含“新加坡”，并且满足外层两个条件\n    $server['underlying-proxy'] = '狮城节点';\n  }\n  else if (substringCountries.some(country => $server.name.includes(country))) {\n    // 如果包含其他指定国家之一，并且满足外层两个条件\n    // 这里的 substring(5, 7) 依然保留原样，如果你的节点格式变了，记得调整。\n    const prefix = $server.name.substring(5, 7);\n    const underlyingProxyName = prefix + '节点';\n    $server['underlying-proxy'] = underlyingProxyName;\n  }\n  else {\n    // 如果不包含“新加坡”或任何指定国家，但满足外层两个条件\n    // 依然设为“香港节点”。\n    $server['underlying-proxy'] = '香港节点';\n  }\n}\n// 如果节点名称不包含 '家宽' 或 '落地'，或者协议不是 shadowsocks, socks5, 或 http，\n// 则跳过上面的整个 if 块，$server['underlying-proxy'] 将不会被修改。\n\n",
                 "mode": "script",
                 "arguments": {}
             },
@@ -132,18 +130,48 @@
         {
             "type": "Script Operator",
             "args": {
-                "content": "// 链式代理自动设置脚本，需手动选择中继节点，需要节点名中含有\"家宽\"或\"落地\"才会生效，按需启用\n// 如果想要设置链式代理的订阅没有包含以上字样，可以在单条订阅中添加一个正则命名操作，左侧设置为\"$\"，右侧设置为\" 落地\"\n// ⚠️注意与上面的链式代理设置脚本只能启用其中一个\nconst substringCountries = ['香港', '台湾', '日本', '美国', '韩国', '英国', '法国', '德国'];\n\n// 定义允许的协议类型列表\nconst allowedProtocols = ['ss', 'socks5', 'http'];\n\n// 调整外层判断条件：\n// 1. 节点名称包含 '家宽' 或 '落地' (原条件)\n// 2. 节点的代理协议类型在 allowedProtocols 列表中\nif (($server.name.includes('家宽') || $server.name.includes('落地')) && allowedProtocols.includes($server.type)) {\n  // 原有的重命名逻辑被包裹在这里面\n  // 这个块只有在名字包含 '家宽' 或 '落地' 且协议是 shadowsocks, socks5, 或 http 时才会执行\n\n  // 将所有满足条件的节点 underlying-proxy 设置为\"中继节点\"\n  $server['underlying-proxy'] = '中继选择';\n}\n// 如果节点名称不包含 '家宽' 或 '落地'，或者协议不是 shadowsocks, socks5, 或 http，\n// 则跳过上面的整个 if 块，$server['underlying-proxy'] 将不会被修改。\n",
+                "content": "// 链式代理自动设置脚本，需手动选择中继节点，需要节点名中含有\"家宽\"或\"落地\"才会生效，按需启用\n// 如果想要设置链式代理的订阅没有包含以上字样，可以在单条订阅中添加一个正则命名操作，左侧设置为\"$\"，右侧设置为\" 落地\"\n// ⚠️注意与上面的链式代理设置脚本只能启用其中一个\nconst substringCountries = ['香港', '台湾', '日本', '美国', '韩国', '英国', '法国', '德国'];\n\n// 定义允许的协议类型列表\nconst allowedProtocols = ['ss', 'socks5', 'http'];\n\n// 调整外层判断条件：\n// 1. 节点名称包含 '家宽' 或 '落地' (原条件)\n// 2. 节点的代理协议类型在 allowedProtocols 列表中\nif (($server.name.includes('家宽') || $server.name.includes('落地') || $server.name.includes('Landing')) && allowedProtocols.includes($server.type)) {\n  // 原有的重命名逻辑被包裹在这里面\n  // 这个块只有在名字包含 '家宽' 或 '落地' 且协议是 shadowsocks, socks5, 或 http 时才会执行\n\n  // 将所有满足条件的节点 underlying-proxy 设置为\"中继节点\"\n  $server['underlying-proxy'] = '中继选择';\n}\n// 如果节点名称不包含 '家宽' 或 '落地'，或者协议不是 shadowsocks, socks5, 或 http，\n// 则跳过上面的整个 if 块，$server['underlying-proxy'] 将不会被修改。\n",
                 "mode": "script",
                 "arguments": {}
             },
             "customName": "",
             "id": "75280958.54806618",
             "disabled": true
+        },
+        {
+            "type": "Script Operator",
+            "args": {
+                "content": "// client-fingerprint指纹修改脚本，按需启用\nasync function operator(proxies = []) {\n  // 遍历所有代理节点\n  proxies.forEach(server => {\n    // 使用文档中提到的方法，直接修改 client-fingerprint 属性\n    server['client-fingerprint'] = 'firefox';\n    // 或者，如果某些配置中属性名称为 clientFingerprint，也可以同时设置\n    // server['clientFingerprint'] = 'firefox';\n  });\n  return proxies;\n}\n",
+                "mode": "script",
+                "arguments": {}
+            },
+            "customName": "",
+            "id": "65597801.89520841",
+            "disabled": true
+        },
+        {
+            "type": "Regex Filter",
+            "args": {
+                "keep": false,
+                "regex": [
+                    "🏴‍☠️"
+                ]
+            },
+            "customName": "",
+            "id": "37417876.56784134",
+            "disabled": false
+        },
+        {
+            "type": "Sort Operator",
+            "args": "asc",
+            "id": "25116284.22819716",
+            "disabled": false
         }
     ],
     "subscriptions": [],
     "tag": [],
     "subscriptionTags": [],
-    "display-name": "sub-store组合订阅模板",
-    "subUserinfo": ""
+    "display-name": "sub-store组合订阅模板_1774659669387",
+    "subUserinfo": "",
+    "isIconColor": true
 }
