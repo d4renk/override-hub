@@ -101,11 +101,22 @@
         {
             "type": "Script Operator",
             "args": {
-                "content": "// 仅对订阅来源或节点名命中白名单关键词的节点启用 IPv4 域名解析\nfunction operator(proxies = []) {\n  const keywords = ['自建', '直连', '免流'];\n\n  return proxies.map(proxy => {\n    const fields = [proxy._subName, proxy._subDisplayName, proxy.name]\n      .filter(Boolean)\n      .map(value => String(value));\n    const shouldResolve = fields.some(value => keywords.some(keyword => value.includes(keyword)));\n\n    if (!shouldResolve) {\n      proxy['_no-resolve'] = true;\n    } else if (proxy['_no-resolve'] === true) {\n      delete proxy['_no-resolve'];\n    }\n\n    return proxy;\n  });\n}",
+                "content": "// 规范 www.189.cn 免流 Reality 节点：只根据节点已有 SNI/名称识别，不写入服务器、UUID、公钥或 short-id。\nfunction operator(proxies = []) {\n  const targetSni = 'www.189.cn';\n\n  return proxies.map(proxy => {\n    const type = String(proxy.type || '').toLowerCase();\n    const name = String(proxy.name || '');\n    const sniFields = [\n      proxy.servername,\n      proxy.serverName,\n      proxy.sni,\n      proxy['tls-servername'],\n      name\n    ].filter(Boolean).map(value => String(value));\n\n    const hasTargetSni = sniFields.some(value => value.includes(targetSni));\n    const looksLikeReality = type === 'vless' && (\n      String(proxy.flow || '').includes('xtls-rprx-vision') ||\n      String(proxy.security || '').toLowerCase() === 'reality' ||\n      Boolean(proxy['reality-opts']) ||\n      Boolean(proxy.realityOpts) ||\n      hasTargetSni\n    );\n\n    if (!looksLikeReality || !hasTargetSni) {\n      return proxy;\n    }\n\n    proxy.servername = targetSni;\n    if (Object.prototype.hasOwnProperty.call(proxy, 'serverName')) proxy.serverName = targetSni;\n    if (Object.prototype.hasOwnProperty.call(proxy, 'sni')) proxy.sni = targetSni;\n    if (Object.prototype.hasOwnProperty.call(proxy, 'tls-servername')) proxy['tls-servername'] = targetSni;\n    proxy['client-fingerprint'] = 'chrome';\n    if (Object.prototype.hasOwnProperty.call(proxy, 'clientFingerprint')) proxy.clientFingerprint = 'chrome';\n\n    const prefixParts = [];\n    if (!name.includes(targetSni)) prefixParts.push(targetSni);\n    if (!name.includes('免流')) prefixParts.push('免流');\n    if (!/reality/i.test(name)) prefixParts.push('Reality');\n\n    if (prefixParts.length > 0) {\n      proxy.name = `${prefixParts.join('-')} ${name}`.trim();\n    }\n\n    return proxy;\n  });\n}",
                 "mode": "script",
                 "arguments": {}
             },
-            "customName": "仅解析自建/直连节点",
+            "customName": "规范 www.189.cn 免流 Reality 节点",
+            "id": "wifi-reality-sni-189-generic-001",
+            "disabled": false
+        },
+        {
+            "type": "Script Operator",
+            "args": {
+                "content": "// 仅对订阅来源、节点名或 www.189.cn Reality SNI 命中白名单的节点启用 IPv4 域名解析\nfunction operator(proxies = []) {\n  const keywords = ['自建', '直连', '免流', 'www.189.cn'];\n\n  return proxies.map(proxy => {\n    const fields = [\n      proxy._subName,\n      proxy._subDisplayName,\n      proxy.name,\n      proxy.servername,\n      proxy.serverName,\n      proxy.sni,\n      proxy['tls-servername']\n    ].filter(Boolean).map(value => String(value));\n    const shouldResolve = fields.some(value => keywords.some(keyword => value.includes(keyword)));\n\n    if (!shouldResolve) {\n      proxy['_no-resolve'] = true;\n    } else if (proxy['_no-resolve'] === true) {\n      delete proxy['_no-resolve'];\n    }\n\n    return proxy;\n  });\n}",
+                "mode": "script",
+                "arguments": {}
+            },
+            "customName": "仅解析自建/直连/免流/www.189.cn 节点",
             "id": "ipv4-resolve-filter-001",
             "disabled": false
         },
