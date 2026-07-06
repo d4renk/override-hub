@@ -1,0 +1,413 @@
+### 参考自https://github.com/yyhhyyyyyy/selfproxy
+### 全局配置
+mixed-port: 7897
+allow-lan: true
+mode: rule
+log-level: warning
+ipv6: false
+find-process-mode: strict
+### 如果使用的是裸核，需要将下面的注释去掉，方便ui界面的使用
+# external-controller: 0.0.0.0:9988
+# external-ui: ui
+# external-ui-url: 'https://mirrors.seaya.link/https://github.com/Zephyruso/zashboard/releases/latest/download/dist.zip'
+# secret: "114514yijiuyijiubayiling"
+profile:
+  store-selected: true
+  store-fake-ip: true
+unified-delay: true
+tcp-concurrent: true
+
+dns:
+  enable: true
+  listen: 0.0.0.0:53
+  ipv6: false
+
+  # 不优先 HTTP/3/QUIC，避免部分节点/网络 UDP 不稳导致 DNS 卡顿
+  prefer-h3: false
+
+  # DNS 查询也遵守分流规则
+  # 业务 DoH 通过代理出去；启动阶段只使用系统 DNS，适配只能使用运营商 DNS 的网络
+  respect-rules: true
+
+  enhanced-mode: fake-ip
+  use-hosts: true
+  use-system-hosts: false
+
+  fake-ip-range: 198.18.0.1/16
+
+  fake-ip-filter:
+    - 'geosite:cn'
+    - 'geosite:private'
+    - 'rule-set:fakeip-filter'
+    - 'rule-set:trackerslist'
+    - 'rule-set:private'
+    - 'rule-set:cn'
+
+  # 启动 / DoH bootstrap DNS：只使用系统 DNS
+  # 这里会走系统从运营商获取的 DNS，不写任何公共 DNS IP
+  default-nameserver:
+    - system
+
+  # 默认 DNS：未知网站 / 海外网站使用国外 DoH，并通过“节点选择”代理访问
+  nameserver:
+    - https://1.1.1.1/dns-query#节点选择
+    - https://8.8.8.8/dns-query#节点选择
+    - https://dns.quad9.net/dns-query#节点选择
+
+  # 国内网站库 / 国内规则 → 国内 DoH，也通过“节点选择”代理访问
+  nameserver-policy:
+    'geosite:cn,private':
+      - https://223.5.5.5/dns-query#节点选择
+      - https://dns.pub/dns-query#节点选择
+
+    'rule-set:cn,domestic_non_ip,direct_non_ip,lan_non_ip':
+      - https://223.5.5.5/dns-query#节点选择
+      - https://dns.pub/dns-query#节点选择
+
+    # 国内 CDN 类服务，用国内 DoH 拿更近的 CDN IP
+    'rule-set:apple_cdn,microsoft_cdn_non_ip,apple_cn_non_ip':
+      - https://223.5.5.5/dns-query#节点选择
+      - https://dns.pub/dns-query#节点选择
+
+    # 广告 / 拦截类域名：返回空成功
+    'rule-set:reject_non_ip,reject_domainset,reject_non_ip_drop,reject_non_ip_no_drop':
+      - rcode://success
+
+  # 代理节点域名解析：只使用系统 DNS
+  # 避免还没连上代理，就要求 DNS 走代理，出现死循环
+  proxy-server-nameserver:
+    - system
+
+### 域名嗅探
+sniffer:
+    enable: true
+    sniff:
+        HTTP:
+            ports: [80, 8080-8880]
+            override-destination: true
+        TLS:
+            ports: [443, 8443]
+        QUIC:
+            ports: [443, 8443]
+    skip-domain:
+        - "Mijia Cloud"
+        - dlg.io.mi.com
+        - "+.push.apple.com"
+
+### Tunnel配置
+tun:
+  enable: false
+  stack: system
+  device: Ethernet 99
+  auto-route: true
+  auto-detect-interface: true
+  dns-hijack:
+    - any:53
+    - tcp://any:53
+  strict-route: true
+  mtu: 1500
+  # 如果有使用zerotier或者headscale等，需要自己配置排除自己的网段
+  # route-exclude-address: ["192.168.110.0/24"]
+
+# 节点筛选
+
+# 按地区筛选
+FilterHK: &FilterHK '^(?=.*(香港|HK|Hong|🇭🇰))^(?!.*(网站|地址|剩余|过期|时间|有效|网址|禁止|邮箱|发布|客服|订阅|节点|落地|家宽|自建|×)).*$'
+FilterJP: &FilterJP '^(?=.*(日本|JP|Japan|🇯🇵))^(?!.*(网站|地址|剩余|过期|时间|有效|网址|禁止|邮箱|发布|客服|订阅|节点|落地|家宽|自建|×)).*$'
+FilterKR: &FilterKR '^(?=.*(韩国|韓|KR|Korea|🇰🇷))^(?!.*(网站|地址|剩余|过期|时间|有效|网址|禁止|邮箱|发布|客服|订阅|节点|落地|家宽|自建|×)).*$'
+FilterSG: &FilterSG '^(?=.*(新加坡|狮城|SG|Singapore|🇸🇬))^(?!.*(网站|地址|剩余|过期|时间|有效|网址|禁止|邮箱|发布|客服|订阅|节点|落地|家宽|自建|×)).*$'
+FilterUS: &FilterUS '^(?=.*(美国|US|United States|America|🇺🇸))^(?!.*(网站|地址|剩余|过期|时间|有效|网址|禁止|邮箱|发布|客服|订阅|节点|落地|家宽|自建|×)).*$'
+FilterUK: &FilterUK '^(?=.*(英国|UK|United Kingdom|🇬🇧))^(?!.*(网站|地址|剩余|过期|时间|有效|网址|禁止|邮箱|发布|客服|订阅|节点|落地|家宽|自建|×)).*$'
+FilterFR: &FilterFR '^(?=.*(法国|FR|France|🇫🇷))^(?!.*(网站|地址|剩余|过期|时间|有效|网址|禁止|邮箱|发布|客服|订阅|节点|落地|家宽|自建|×)).*$'
+FilterDE: &FilterDE '^(?=.*(德国|DE|Germany|🇩🇪))^(?!.*(网站|地址|剩余|过期|时间|有效|网址|禁止|邮箱|发布|客服|订阅|节点|落地|家宽|自建|×)).*$'
+FilterTW: &FilterTW '^(?=.*(台湾|TW|Taiwan|Wan|🇨🇳|🇨🇳))^(?!.*(网站|地址|剩余|过期|时间|有效|网址|禁止|邮箱|发布|客服|订阅|节点|落地|家宽|自建|×)).*$'
+FilterOthers: &FilterOthers '^(?!.*(🇭🇰|HK|Hong|香港|🇨🇳|TW|Taiwan|Wan|🇯🇵|JP|Japan|日本|🇸🇬|SG|Singapore|狮城|🇺🇸|US|United States|America|美国|🇩🇪|DE|Germany|德国|🇬🇧|UK|United Kingdom|英国|🇰🇷|KR|Korea|韩国|韓|🇫🇷|FR|France|法国)).*$'
+FilterAdvance: &FilterAdvance '^(?=.*((?i)(\s|-)(([1-9](\.\d+)?)(×|x|X))|专线|专用|高级|急速|高倍率|IEPL|IPLC|AIA|CTM|CC|iepl|iplc|aia|ctm|cc))^(?!.*(落地|家宽|自建)).*$'
+FilterLanding: &FilterLanding '^(?=.*((?i)落地|家宽|自建)).*$'
+FilterLandingHK: &FilterLandingHK '^(?=.*((?i)落地|家宽|自建))(?=.*(香港|HK|Hong|🇭🇰)).*$'
+FilterLandingJP: &FilterLandingJP '^(?=.*((?i)落地|家宽|自建))(?=.*(日本|JP|Japan|🇯🇵)).*$'
+FilterLandingKR: &FilterLandingKR '^(?=.*((?i)落地|家宽|自建))(?=.*(韩国|韓|KR|Korea|🇰🇷)).*$'
+FilterLandingSG: &FilterLandingSG '^(?=.*((?i)落地|家宽|自建))(?=.*(新加坡|狮城|SG|Singapore|🇸🇬)).*$'
+FilterLandingUS: &FilterLandingUS '^(?=.*((?i)落地|家宽|自建))(?=.*(美国|US|United States|America|🇺🇸)).*$'
+FilterLandingUK: &FilterLandingUK '^(?=.*((?i)落地|家宽|自建))(?=.*(英国|UK|United Kingdom|🇬🇧)).*$'
+FilterLandingFR: &FilterLandingFR '^(?=.*((?i)落地|家宽|自建))(?=.*(法国|FR|France|🇫🇷)).*$'
+FilterLandingDE: &FilterLandingDE '^(?=.*((?i)落地|家宽|自建))(?=.*(德国|DE|Germany|🇩🇪)).*$'
+FilterLandingTW: &FilterLandingTW '^(?=.*((?i)落地|家宽|自建))(?=.*(台湾|TW|Taiwan|Wan|🇨🇳)).*$'
+FilterAll: &FilterAll '^(?=.*(.))(?!.*((?i)群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|(\b(USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author)\b|(\d{4}-\d{2}-\d{2}|\d+G)))).*$'
+FilterTunnel: &FilterTunnel '^(?=.*(香港|HK|Hong|🇭🇰|日本|JP|Japan|🇯🇵|新加坡|狮城|SG|Singapore|🇸🇬|韩国|KR|Korea|🇰🇷|美国|US|United States|America|🇺🇸))^(?!.*(网站|地址|剩余|过期|时间|有效|网址|禁止|邮箱|发布|客服|订阅|节点|落地|家宽|自建|×)).*$'
+
+Select: &Select {type: select, url: 'https://www.apple.com/library/test/success.html', disable-udp: false, hidden: false, include-all: true}
+Auto: &Auto {type: url-test, url: 'https://www.apple.com/library/test/success.html', interval: 10, tolerance: 50, disable-udp: false, hidden: true, include-all: true}
+Loadbalance: &Loadbalance {type: load-balance, url: 'https://www.apple.com/library/test/success.html', interval: 300, strategy: round-robin, disable-udp: false, hidden: true, include-all: true}
+LandingLB: &LandingLB {type: url-test, url: 'https://www.apple.com/library/test/success.html', interval: 10, tolerance: 50, disable-udp: false, hidden: true, include-all: true}
+# 策略组
+proxy-groups: 
+  # 主选择组
+  - {name: 节点选择, type: select, proxies: [自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 落地家宽, 节点轮询, 全球直连], url: https://www.apple.com/library/test/success.html, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png}
+  - {name: 全球直连, type: select, proxies: [DIRECT, 自动选择], include-all: true, url: https://www.apple.com/library/test/success.html, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png}
+
+  # 手动/自动
+  - {name: 手动选择, <<: *Select, filter: *FilterAll, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Static.png}
+  - {name: 自动选择, type: select, proxies: [香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], url: https://www.apple.com/library/test/success.html, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png}
+
+  # 特殊分组
+  - {name: 高级选择, <<: *Auto, filter: *FilterAdvance, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png}
+  - {name: 中继选择, <<: *Select, filter: *FilterAll, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Final.png}
+  - {name: 落地选择, <<: *Select, filter: *FilterLanding, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png}
+  - {name: 落地家宽, type: select, proxies: [全球直连, 落地家宽香港, 落地家宽日本, 落地家宽韩国, 落地家宽狮城, 落地家宽美国, 落地家宽英国, 落地家宽法国, 落地家宽德国, 落地家宽台湾], url: https://www.apple.com/library/test/success.html, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png}
+  - {name: 节点轮询, <<: *Loadbalance, filter: *FilterTunnel, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Roundrobin.png}
+
+  # 应用分组
+  - {name: 电报信息, type: select, proxies: [节点选择, 全球直连, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 落地家宽, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Telegram.png}
+  - {name: 人工智能, type: select, proxies: [全球直连, 狮城节点, 节点选择, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 落地家宽, 节点轮询, 香港节点, 日本节点, 韩国节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png}
+  - {name: 下载服务, type: select, proxies: [节点选择, 全球直连, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 落地家宽, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Download.png}
+  - {name: 苹果服务, type: select, proxies: [全球直连, 节点选择, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 落地家宽, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Apple.png}
+  - {name: 微软服务, type: select, proxies: [全球直连, 节点选择, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 落地家宽, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Microsoft.png}
+  - {name: 谷歌服务, type: select, proxies: [节点选择, 全球直连, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 落地家宽, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png}
+  - {name: 国外媒体, type: select, proxies: [节点选择, 全球直连, 自动选择, 手动选择, 高级选择, 中继选择, 落地选择, 落地家宽, 节点轮询, 香港节点, 日本节点, 韩国节点, 狮城节点, 美国节点, 英国节点, 法国节点, 德国节点, 台湾节点], icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Streaming.png}
+
+  # 自动选择 - 按地区
+  - {name: 香港节点, <<: *Auto, filter: *FilterHK, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/HK.png}
+  - {name: 日本节点, <<: *Auto, filter: *FilterJP, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/JP.png}
+  - {name: 韩国节点, <<: *Auto, filter: *FilterKR, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/KR.png}
+  - {name: 狮城节点, <<: *Auto, filter: *FilterSG, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/SG.png}
+  - {name: 美国节点, <<: *Auto, filter: *FilterUS, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/US.png}
+  - {name: 英国节点, <<: *Auto, filter: *FilterUK, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/UK.png}
+  - {name: 法国节点, <<: *Auto, filter: *FilterFR, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/FR.png}
+  - {name: 德国节点, <<: *Auto, filter: *FilterDE, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/DE.png}
+  - {name: 台湾节点, <<: *Auto, filter: *FilterTW, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/CN.png}
+
+  # 落地家宽 - 按地区负载均衡
+  - {name: 落地家宽香港, <<: *LandingLB, filter: *FilterLandingHK, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/HK.png}
+  - {name: 落地家宽日本, <<: *LandingLB, filter: *FilterLandingJP, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/JP.png}
+  - {name: 落地家宽韩国, <<: *LandingLB, filter: *FilterLandingKR, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/KR.png}
+  - {name: 落地家宽狮城, <<: *LandingLB, filter: *FilterLandingSG, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/SG.png}
+  - {name: 落地家宽美国, <<: *LandingLB, filter: *FilterLandingUS, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/US.png}
+  - {name: 落地家宽英国, <<: *LandingLB, filter: *FilterLandingUK, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/UK.png}
+  - {name: 落地家宽法国, <<: *LandingLB, filter: *FilterLandingFR, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/FR.png}
+  - {name: 落地家宽德国, <<: *LandingLB, filter: *FilterLandingDE, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/DE.png}
+  - {name: 落地家宽台湾, <<: *LandingLB, filter: *FilterLandingTW, icon: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/CN.png}
+
+### 规则配置
+RuleSet_classical: &RuleSet_classical {type: http, behavior: classical, interval: 43200, format: text, proxy: 节点选择}
+RuleSet_domain: &RuleSet_domain {type: http, behavior: domain, interval: 43200, format: text, proxy: 节点选择}
+RuleSet_ipcidr: &RuleSet_ipcidr {type: http, behavior: ipcidr, interval: 43200, format: text, proxy: 节点选择}
+RuleSet_filter: &RuleSet_filter {type: http, behavior: domain, interval: 43200, format: mrs, proxy: 节点选择}
+
+# 订阅规则
+rule-providers:
+  fakeip-filter:
+    <<: *RuleSet_filter
+    url: https://886533.xyz/https://testingcf.jsdelivr.net/gh/DustinWin/ruleset_geodata@mihomo-ruleset/fakeip-filter.mrs
+    path: ./rule_set/other_ruleset/fakeip-filter.mrs
+
+  cn:
+    <<: *RuleSet_filter
+    url: https://886533.xyz/https://testingcf.jsdelivr.net/gh/DustinWin/ruleset_geodata@mihomo-ruleset/cn.mrs
+    path: ./rule_set/other_ruleset/cn.mrs
+
+  private:
+    <<: *RuleSet_filter
+    url: https://886533.xyz/https://testingcf.jsdelivr.net/gh/DustinWin/ruleset_geodata@mihomo-ruleset/private.mrs
+    path: ./rule_set/other_ruleset/private.mrs
+
+  trackerslist:
+    <<: *RuleSet_filter
+    url: https://886533.xyz/https://testingcf.jsdelivr.net/gh/DustinWin/ruleset_geodata@mihomo-ruleset/trackerslist.mrs
+    path: ./rule_set/other_ruleset/trackerslist.mrs
+
+  reject_non_ip_no_drop:
+    <<: *RuleSet_classical
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/non_ip/reject-no-drop.txt
+    path: ./rule_set/sukkaw_ruleset/reject_non_ip_no_drop.txt
+
+  reject_non_ip_drop:
+    <<: *RuleSet_classical
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/non_ip/reject-drop.txt
+    path: ./rule_set/sukkaw_ruleset/reject_non_ip_drop.txt
+
+  reject_non_ip:
+    <<: *RuleSet_classical
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/non_ip/reject.txt
+    path: ./rule_set/sukkaw_ruleset/reject_non_ip.txt
+
+  reject_domainset:
+    <<: *RuleSet_domain
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/domainset/reject.txt
+    path: ./rule_set/sukkaw_ruleset/reject_domainset.txt
+
+  reject_ip:
+    <<: *RuleSet_classical
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/ip/reject.txt
+    path: ./rule_set/sukkaw_ruleset/reject_ip.txt
+
+  # 所有流媒体（包括上述所有流媒体）
+  stream_non_ip:
+    <<: *RuleSet_classical
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/non_ip/stream.txt
+    path: ./rule_set/sukkaw_ruleset/stream_non_ip.txt
+
+  stream_ip:
+    <<: *RuleSet_classical
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/ip/stream.txt
+    path: ./rule_set/sukkaw_ruleset/stream_ip.txt
+
+  ai_non_ip:
+    <<: *RuleSet_classical
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/non_ip/ai.txt
+    path: ./rule_set/sukkaw_ruleset/ai_non_ip.txt
+
+  telegram_non_ip:
+    <<: *RuleSet_classical
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/non_ip/telegram.txt
+    path: ./rule_set/sukkaw_ruleset/telegram_non_ip.txt
+
+  telegram_ip:
+    <<: *RuleSet_classical
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/ip/telegram.txt
+    path: ./rule_set/sukkaw_ruleset/telegram_ip.txt
+
+  apple_cdn:
+    <<: *RuleSet_domain
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/domainset/apple_cdn.txt
+    path: ./rule_set/sukkaw_ruleset/apple_cdn.txt
+
+  apple_services:
+    <<: *RuleSet_classical
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/non_ip/apple_services.txt
+    path: ./rule_set/sukkaw_ruleset/apple_services.txt
+
+  apple_cn_non_ip:
+    <<: *RuleSet_classical
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/non_ip/apple_cn.txt
+    path: ./rule_set/sukkaw_ruleset/apple_cn_non_ip.txt
+  
+  microsoft_cdn_non_ip:
+    <<: *RuleSet_classical
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/non_ip/microsoft_cdn.txt
+    path: ./rule_set/sukkaw_ruleset/microsoft_cdn_non_ip.txt
+
+  microsoft_non_ip:
+    <<: *RuleSet_classical
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/non_ip/microsoft.txt
+    path: ./rule_set/sukkaw_ruleset/microsoft_non_ip.txt
+  
+  # 软件更新、操作系统等大文件下载
+  download_domainset:
+    <<: *RuleSet_domain
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/domainset/download.txt
+    path: ./rule_set/sukkaw_ruleset/download_domainset.txt
+
+  download_non_ip:
+    <<: *RuleSet_domain
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/non_ip/download.txt
+    path: ./rule_set/sukkaw_ruleset/download_non_ip.txt
+
+  # 内网域名和局域网 IP
+  lan_non_ip:
+    <<: *RuleSet_classical
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/non_ip/lan.txt
+    path: ./rule_set/sukkaw_ruleset/lan_non_ip.txt
+
+  lan_ip:
+    <<: *RuleSet_classical
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/ip/lan.txt
+    path: ./rule_set/sukkaw_ruleset/lan_ip.txt
+  
+  domestic_non_ip:
+    <<: *RuleSet_classical
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/non_ip/domestic.txt
+    path: ./rule_set/sukkaw_ruleset/domestic_non_ip.txt
+
+  direct_non_ip:
+    <<: *RuleSet_classical
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/non_ip/direct.txt
+    path: ./rule_set/sukkaw_ruleset/direct_non_ip.txt
+
+  global_non_ip:
+    <<: *RuleSet_classical
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/non_ip/global.txt
+    path: ./rule_set/sukkaw_ruleset/global_non_ip.txt
+
+  domestic_ip:
+    <<: *RuleSet_classical
+    url: https://886533.xyz/https://ruleset.skk.moe/Clash/ip/domestic.txt
+    path: ./rule_set/sukkaw_ruleset/domestic_ip.txt
+
+  google_non_ip:
+    <<: *RuleSet_classical
+    url: https://886533.xyz/https://testingcf.jsdelivr.net/gh/dler-io/Rules@main/Clash/Provider/Google.yaml
+    path: ./rule_set/sukkaw_ruleset/google_non_ip.yaml
+
+  google_ip:
+    <<: *RuleSet_ipcidr
+    url: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/google.txt
+    path: ./rule_set/sukkaw_ruleset/google_ip.txt
+
+  china_ip:
+    <<: *RuleSet_ipcidr
+    url: https://886533.xyz/https://testingcf.jsdelivr.net/gh/Seameee/override-hub@refs/heads/main/mergecnip/china_ip.txt
+    path: ./rule_set/other_ruleset/china_ip.txt
+
+# 分流规则
+rules:
+  ### 其他
+  - DOMAIN-KEYWORD,srmdata,REJECT
+  # Steam 下载服务器 (必须直连，否则速度慢)
+  - DOMAIN-SUFFIX,steamcontent.com,全球直连
+  - DOMAIN-SUFFIX,steampowered.com.8686c.com,全球直连
+  - DOMAIN-SUFFIX,steamserver.net,全球直连
+  - DOMAIN,content.steampowered.com,全球直连
+  - DOMAIN,content-origin.steampowered.com,全球直连
+  - DOMAIN,client-download.steampowered.com,全球直连
+  - DOMAIN,media.steampowered.com,全球直连
+  - DOMAIN,clientconfig.akamai.steamstatic.com,全球直连
+  - DOMAIN-SUFFIX,steamchina.com,全球直连
+  - DOMAIN-SUFFIX,wmsjsteam.com,全球直连
+  - DOMAIN-SUFFIX,dl.steam.clngaa.com,全球直连
+  - DOMAIN-SUFFIX,dl.steam.ksyna.com,全球直连
+  ### IP类
+  - IP-CIDR,103.10.124.0/24,全球直连
+  - IP-CIDR,103.28.54.0/24,全球直连
+  - IP-CIDR,146.66.152.0/24,全球直连
+  - IP-CIDR,146.66.155.0/24,全球直连
+  - IP-CIDR,153.254.86.0/24,全球直连
+  - IP-CIDR,155.133.224.0/22,全球直连
+  - IP-CIDR,162.254.192.0/21,全球直连
+  - IP-CIDR,185.25.182.0/23,全球直连
+  - IP-CIDR,190.217.32.0/21,全球直连
+  - IP-CIDR,192.69.96.0/22,全球直连
+  - IP-CIDR,205.196.6.0/24,全球直连
+  - IP-CIDR,208.64.200.0/22,全球直连
+  - IP-CIDR,208.78.164.0/22,全球直连
+  ### 非 IP 类规则
+  - RULE-SET,reject_non_ip,REJECT
+  - RULE-SET,reject_domainset,REJECT
+  - RULE-SET,reject_non_ip_drop,REJECT-DROP
+  - RULE-SET,reject_non_ip_no_drop,REJECT
+  - RULE-SET,ai_non_ip,人工智能
+  - RULE-SET,stream_non_ip,国外媒体
+  - RULE-SET,telegram_non_ip,电报信息
+  - RULE-SET,apple_cdn,全球直连
+  - RULE-SET,download_domainset,下载服务
+  - RULE-SET,download_non_ip,下载服务
+  - RULE-SET,microsoft_cdn_non_ip,全球直连
+  - RULE-SET,apple_cn_non_ip,全球直连
+  - RULE-SET,apple_services,苹果服务
+  - RULE-SET,microsoft_non_ip,微软服务
+  - RULE-SET,google_non_ip,谷歌服务
+  - RULE-SET,global_non_ip,节点选择
+  - RULE-SET,domestic_non_ip,全球直连
+  - RULE-SET,cn,全球直连
+  - RULE-SET,direct_non_ip,全球直连
+  - RULE-SET,lan_non_ip,全球直连
+
+  ### IP 类规则
+  - RULE-SET,reject_ip,REJECT
+  - RULE-SET,telegram_ip,电报信息,no-resolve
+  - RULE-SET,stream_ip,国外媒体
+  - RULE-SET,google_ip,谷歌服务
+  - RULE-SET,lan_ip,全球直连,no-resolve
+  - RULE-SET,domestic_ip,全球直连
+  - RULE-SET,china_ip,全球直连
+  - MATCH,节点选择

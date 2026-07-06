@@ -17,6 +17,8 @@
 提供远程解析与本地分流两个版本，请按自己的 DNS 使用方式选择。
 
 - **远程 DNS 覆写配置**：[selfuse_test_remote.yaml](https://raw.githubusercontent.com/d4renk/override-hub/refs/heads/main/selfuse_test_remote.yaml)
+- **远程 DNS 覆写配置（IPv4 代理解析版）**：[selfuse_test_remote_ipv4_resolve.yaml](https://raw.githubusercontent.com/d4renk/override-hub/refs/heads/main/selfuse_test_remote_ipv4_resolve.yaml)
+  - 适合直连网络只能使用运营商 DNS 的环境：启动和代理节点解析使用系统 DNS，业务 DoH 通过 `节点选择` 代理组访问。
 - **本地 DNS 分流配置**：[selfuse_test_local.yaml](https://raw.githubusercontent.com/d4renk/override-hub/refs/heads/main/selfuse_test_local.yaml)
 
 ### 2. Shadowrocket 配置文件
