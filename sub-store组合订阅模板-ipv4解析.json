@@ -101,7 +101,7 @@
         {
             "type": "Script Operator",
             "args": {
-                "content": "// 仅对订阅来源或节点名命中“自建/直连”的节点启用 IPv4 域名解析\nfunction operator(proxies = []) {\n  const keywords = ['自建', '直连'];\n\n  return proxies.map(proxy => {\n    const fields = [proxy._subName, proxy._subDisplayName, proxy.name]\n      .filter(Boolean)\n      .map(value => String(value));\n    const shouldResolve = fields.some(value => keywords.some(keyword => value.includes(keyword)));\n\n    if (!shouldResolve) {\n      proxy['_no-resolve'] = true;\n    }\n\n    return proxy;\n  });\n}",
+                "content": "// 仅对订阅来源或节点名命中白名单关键词的节点启用 IPv4 域名解析\nfunction operator(proxies = []) {\n  const keywords = ['自建', '直连', '免流'];\n\n  return proxies.map(proxy => {\n    const fields = [proxy._subName, proxy._subDisplayName, proxy.name]\n      .filter(Boolean)\n      .map(value => String(value));\n    const shouldResolve = fields.some(value => keywords.some(keyword => value.includes(keyword)));\n\n    if (!shouldResolve) {\n      proxy['_no-resolve'] = true;\n    } else if (proxy['_no-resolve'] === true) {\n      delete proxy['_no-resolve'];\n    }\n\n    return proxy;\n  });\n}",
                 "mode": "script",
                 "arguments": {}
             },
