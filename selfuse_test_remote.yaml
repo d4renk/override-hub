@@ -407,3 +407,35 @@ rules:
   - RULE-SET,domestic_ip,全球直连
   - RULE-SET,china_ip,全球直连
   - MATCH,节点选择
+ ### 隐私保护
+  - DOMAIN-KEYWORD,srmdata,REJECT
+  - DOMAIN-KEYWORD,monitor-web,REJECT
+  - DOMAIN-SUFFIX,tep.sheincorp.cn,REJECT
+  - DOMAIN-SUFFIX,tep-test.sheincorp.cn,REJECT
+  - DOMAIN-SUFFIX,cloud-now.sheincorp.cn,REJECT
+  - DOMAIN-SUFFIX,elk-front-dev.sheincorp.cn,REJECT
+  - DOMAIN-SUFFIX,apm-front-test01.sheincorp.cn,REJECT
+  - DOMAIN-SUFFIX,buried-admin-api-gray03.biz.sheincorp.cn,REJECT
+  - DOMAIN-SUFFIX,elk-burypoint-proxy-cneast-test-01.test.paas-test.sheincorp.cn,REJECT
+  ###设备
+  - DOMAIN-SUFFIX,zpnv.shein.com,REJECT
+  - DOMAIN-SUFFIX,pc-test25.shein.com,REJECT
+  - DOMAIN-SUFFIX,pc-test41.shein.com,REJECT
+  # 全部 srmdata 地址
+  - DOMAIN-WILDCARD,*srmdata*,REJECT
+  # 子域
+  - DOMAIN-WILDCARD,tep.sheincorp.cn,REJECT
+  - DOMAIN-WILDCARD,*.tep.sheincorp.cn,REJECT
+  - DOMAIN-WILDCARD,buried-admin-api-gray03.biz.sheincorp.cn,REJECT
+  - DOMAIN-WILDCARD,*.buried-admin-api-gray03.biz.sheincorp.cn,REJECT
+  # 事件
+  - DOMAIN-WILDCARD,gateway.shein.com,REJECT
+  - DOMAIN-WILDCARD,*.gateway.shein.com,REJECT
+
+  # 客户端
+  - DOMAIN-WILDCARD,cinfo-v*.shein.com,REJECT
+  - DOMAIN-WILDCARD,*.cinfo-v*.shein.com,REJECT
+  - DOMAIN-WILDCARD,beacon.riskified.com,REJECT
+  - DOMAIN-WILDCARD,*.beacon.riskified.com,REJECT
+  - DOMAIN-WILDCARD,h.online-metrix.net,REJECT
+  - DOMAIN-WILDCARD,*.h.online-metrix.net,REJECT
